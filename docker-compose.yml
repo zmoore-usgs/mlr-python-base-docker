@@ -1,0 +1,12 @@
+
+---
+  version: '3.5'
+      
+  services:
+    mlr-python-base:
+      build: .
+      image: mlr-python-base
+      ports:
+        - "443:443"
+      env_file:
+        - docker-compose.env
