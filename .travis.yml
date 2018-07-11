@@ -20,4 +20,4 @@ install:
   - docker-compose -f docker-compose.yml up -d --build
 
 script:
-  - docker ps | grep -q "${DOCKER_IMAGE}"
+  - docker ps -a | grep -q "${DOCKER_IMAGE}"
