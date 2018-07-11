@@ -14,5 +14,3 @@ RUN apk add --update --no-cache \
   export PIP_CERT="/etc/ssl/certs/ca-certificates.crt" && \
   pip3 install --upgrade pip
 ENV bind_ip 0.0.0.0
-ENV HEALTH_CHECK_ENDPOINT=health
-ENV HEALTHY_RESPONSE_CONTAINS='{"status":"UP"}'
