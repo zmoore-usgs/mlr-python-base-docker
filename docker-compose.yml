@@ -1,0 +1,16 @@
+
+---
+  version: '3.5'
+  secrets:
+    water_auth_secret:
+      file: ./config/oauthClientSecret.txt
+      
+  services:
+    mlr-python-base:
+      build: .
+      image: mlr-python-base
+      secrets:
+        - source: water_auth_secret
+          target: /oauthClientSecret.txt
+      env_file:
+        - docker-compose.env
