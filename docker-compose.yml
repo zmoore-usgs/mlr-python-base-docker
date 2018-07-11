@@ -6,5 +6,3 @@
     mlr-python-base:
       build: .
       image: mlr-python-base
-      ports:
-        - "443:443"
