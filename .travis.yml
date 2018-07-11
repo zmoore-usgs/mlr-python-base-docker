@@ -16,7 +16,7 @@ before_install:
 
 install:
   - docker build -t mlr-python-base .
-  - docker-compose -f docker-compose-default.yml up -d --build
+  - docker-compose -f docker-compose.yml up -d --build
 
 script:
 - docker ps | grep -q mlr-python-base
