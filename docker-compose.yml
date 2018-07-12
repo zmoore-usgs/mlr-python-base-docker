@@ -1,10 +1,20 @@
 
 ---
   version: '3.5'
+  secrets:
+    ssl_crt:
+      file: ./config/certificates/wildcard-dev.crt
+    ssl_key:
+      file: ./config/certificates/wildcard-dev.key
       
   services:
     mlr-python-base:
       build: .
       image: mlr-python-base
+      secrets:
+        - source: ssl_crt
+          target: /wildcard-ssl.crt
+        - source: ssl_key
+          target: /wildcard-ssl.key
       env_file:
         - docker-compose.env
