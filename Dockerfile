@@ -22,4 +22,4 @@ ENV oauthResourceTokenKeyUri=https://example.gov/oauth/token_key
 ENV jwt_algorithm=HS256
 ENV jwt_decode_audience=default
 ENV ssl_cert_path=/wildcard-ssl.crt
-ENV ssl_key_path=/tomcat-wildcard-ssl.key
+ENV ssl_key_path=/wildcard-ssl.key
