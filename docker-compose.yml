@@ -19,3 +19,6 @@
       env_file:
         - config.env
         - secrets.env
+      ports:
+        - "8000:8000"
+      command: python -m http.server 8000

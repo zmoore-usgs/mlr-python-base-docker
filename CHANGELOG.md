@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - kmschoep@usgs.gov - docker-compose.yml
 - kmschoep@usgs.gov - .travis.yml
 - isuftin@usgs.gov - python user
+- isuftin@usgs.gov - Added curl check in travis to verify http server is running
 
 ### Changed
  - isuftin@usgs.gov - Moved lines around in Dockerfile
