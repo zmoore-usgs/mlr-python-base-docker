@@ -6,15 +6,19 @@
       file: ./config/certificates/wildcard-dev.crt
     ssl_key:
       file: ./config/certificates/wildcard-dev.key
-      
+
   services:
     mlr-python-base:
       build: .
       image: mlr-python-base
       secrets:
         - source: ssl_crt
-          target: /wildcard-ssl.crt
+          target: /home/python/wildcard-ssl.crt
         - source: ssl_key
-          target: /wildcard-ssl.key
+          target: /home/python/wildcard-ssl.key
       env_file:
-        - docker-compose.env
+        - config.env
+        - secrets.env
+      ports:
+        - "8000:8000"
+      command: python -m http.server 8000
