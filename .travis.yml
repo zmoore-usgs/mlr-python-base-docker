@@ -24,7 +24,8 @@ install:
   - docker-compose -f docker-compose.yml up -d --build
 
 script:
-  - docker ps -a | grep -q "${DOCKER_IMAGE}"
+  # Not yet
+  # - docker ps -a | grep -q "${DOCKER_IMAGE}"
   - cd docker-bench-security
   - sudo sh docker-bench-security.sh -c container_images
   - docker run -d --name db arminc/clair-db
