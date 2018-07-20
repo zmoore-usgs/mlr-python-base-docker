@@ -1,4 +1,4 @@
-#!/bin/ash -x
+#!/bin/ash
 # shellcheck shell=dash
 
 # Ensure certificate import directory exists
@@ -9,7 +9,7 @@ if [ -n "${CERT_IMPORT_DIRECTORY}" ] && [ -d "${CERT_IMPORT_DIRECTORY}" ]; then
       FILENAME=`basename ${c%.*}` # get just file name, not extension
       openssl x509 -in $CERT_IMPORT_DIRECTORY/$FILENAME.crt -out $CERT_IMPORT_DIRECTORY/$FILENAME.pem -outform PEM
       cp $CERT_IMPORT_DIRECTORY/$FILENAME.crt /usr/local/share/ca-certificates/$FILENAME.crt
-  	done
+    done
     update-ca-certificates
   else
     echo "No certificates found in $CERT_IMPORT_DIRECTORY"
