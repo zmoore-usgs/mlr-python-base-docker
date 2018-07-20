@@ -13,6 +13,7 @@ ENV jwt_algorithm=HS256
 ENV jwt_decode_audience=default
 ENV ssl_cert_path=$HOME/wildcard-ssl.crt
 ENV ssl_key_path=$HOME/wildcard-ssl.key
+ENV CERT_IMPORT_DIRECTORY=/home/python/certificates
 
 RUN apk update && apk upgrade && apk add --update --no-cache \
   python3 \
@@ -30,6 +31,9 @@ RUN export PIP_CERT="/etc/ssl/certs/ca-certificates.crt" && \
   rm -r /usr/lib/python*/ensurepip && \
   pip3 install --upgrade pip && \
   if [[ ! -e /usr/bin/python ]]; then ln -sf /usr/bin/python3 /usr/bin/python; fi
+
+COPY import_certs.sh /import_certs.sh
+RUN [ "chmod", "+x", "/import_certs.sh"]
 
 RUN adduser -D -u 1000 $USER
 WORKDIR $HOME
