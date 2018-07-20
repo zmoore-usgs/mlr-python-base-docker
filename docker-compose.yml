@@ -13,9 +13,9 @@
       image: mlr-python-base
       secrets:
         - source: ssl_crt
-          target: /home/python/wildcard-ssl.crt
+          target: /home/python/certificates/wildcard-ssl.crt
         - source: ssl_key
-          target: /home/python/wildcard-ssl.key
+          target: /home/python/certificates/wildcard-ssl.key
       env_file:
         - config.env
         - secrets.env
