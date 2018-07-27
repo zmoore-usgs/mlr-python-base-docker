@@ -1,6 +1,8 @@
 #!/bin/ash
 # shellcheck shell=dash
 
+echo "Importing ca certificates..."
+
 # Ensure certificate import directory exists
 if [ -n "${CERT_IMPORT_DIRECTORY}" ] && [ -d "${CERT_IMPORT_DIRECTORY}" ]; then
   CERT_COUNT=$(find $CERT_IMPORT_DIRECTORY -name "*.crt" -type f | wc -l)
@@ -14,4 +16,6 @@ if [ -n "${CERT_IMPORT_DIRECTORY}" ] && [ -d "${CERT_IMPORT_DIRECTORY}" ]; then
   else
     echo "No certificates found in $CERT_IMPORT_DIRECTORY"
   fi
+else
+    echo "Could not find or access cert import directory: $CERT_IMPORT_DIRECTORY"
 fi
