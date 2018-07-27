@@ -4,6 +4,9 @@ LABEL maintainer="gs-w_eto_eb_federal_employees@usgs.gov"
 
 ENV USER=python
 ENV HOME=/home/$USER
+ENV gunicorn_keep_alive=75
+ENV gunicorn_silent_timeout=120
+ENV gunicorn_graceful_timeout=120
 ENV bind_ip 0.0.0.0
 ENV listening_port=8443
 ENV oauth_server_token_key_url=https://example.gov/oauth/token_key
@@ -30,7 +33,8 @@ RUN export PIP_CERT="/etc/ssl/certs/ca-certificates.crt" && \
   pip3 install --upgrade pip && \
   if [[ ! -e /usr/bin/python ]]; then ln -sf /usr/bin/python3 /usr/bin/python; fi
 
-RUN pip3 install gunicorn==19.7.1
+RUN pip3 install gunicorn==19.7.1 && \
+    pip3 install gevent==1.3.5
 
 RUN adduser --disabled-password -u 1000 $USER
 # The python user needs to own the following two directories to be able to write
