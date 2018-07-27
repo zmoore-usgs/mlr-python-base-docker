@@ -7,8 +7,6 @@ ENV HOME=/home/$USER
 ENV bind_ip 0.0.0.0
 ENV listening_port=8443
 ENV oauth_server_token_key_url=https://example.gov/oauth/token_key
-# Blank value here means the SSL connection to the above URL is not verified
-ENV oauth_server_cert_path=
 ENV jwt_algorithm=HS256
 ENV jwt_decode_audience=default
 ENV CERT_IMPORT_DIRECTORY=$HOME/certificates
