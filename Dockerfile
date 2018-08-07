@@ -31,7 +31,7 @@ RUN apk update && apk add --update --no-cache \
 RUN export PIP_CERT="/etc/ssl/certs/ca-certificates.crt" && \
   python3 -m ensurepip && \
   rm -r /usr/lib/python*/ensurepip && \
-  pip3 install --upgrade pip && \
+  pip3 install --upgrade --no-cache-dir pip && \
   if [[ ! -e /usr/bin/python ]]; then ln -sf /usr/bin/python3 /usr/bin/python; fi
 
 RUN adduser --disabled-password -u 1000 $USER
@@ -48,9 +48,9 @@ COPY entrypoint.sh entrypoint.sh
 COPY gunicorn_config.py local/gunicorn_config.py
 RUN [ "chmod", "+x", "import_certs.sh", "entrypoint.sh" ]
 RUN chown $USER:$USER import_certs.sh entrypoint.sh local/gunicorn_config.py
-RUN chown -R $USER $HOME/
+RUN chown -R $USER:$USER $HOME
 USER $USER
-RUN pip3 install --user gunicorn==19.7.1 && \
-    pip3 install --user gevent==1.3.5
+RUN pip3 install --user --no-cache-dir gunicorn==19.7.1 && \
+    pip3 install --user --no-cache-dir gevent==1.3.5
 
 CMD ["./entrypoint.sh"]
