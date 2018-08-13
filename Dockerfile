@@ -4,11 +4,13 @@ LABEL maintainer="gs-w_eto_eb_federal_employees@usgs.gov"
 
 ENV USER=python
 ENV HOME=/home/$USER
+ENV artifact_id=sample_app
 ENV gunicorn_keep_alive=75
 ENV gunicorn_silent_timeout=120
 ENV gunicorn_graceful_timeout=120
 ENV bind_ip 0.0.0.0
-ENV listening_port=8443
+ENV protocol=https
+ENV listening_port=8000
 ENV oauth_server_token_key_url=https://example.gov/oauth/token_key
 ENV jwt_algorithm=HS256
 ENV jwt_decode_audience=default
@@ -50,7 +52,15 @@ RUN [ "chmod", "+x", "import_certs.sh", "entrypoint.sh" ]
 RUN chown $USER:$USER import_certs.sh entrypoint.sh local/gunicorn_config.py
 RUN chown -R $USER:$USER $HOME
 USER $USER
-RUN pip3 install --user --no-cache-dir gunicorn==19.7.1 && \
-    pip3 install --user --no-cache-dir gevent==1.3.5
+ARG GUNICORN_VERSION=19.7.1
+ARG GEVENT_VERSION=1.3.5
+RUN pip3 install --user --quiet --no-cache-dir gunicorn==$GUNICORN_VERSION && \
+    pip3 install --user --quiet --no-cache-dir gevent==$GEVENT_VERSION
+
+COPY app.py $HOME/app.py
 
 CMD ["./entrypoint.sh"]
+
+HEALTHCHECK CMD curl -k ${protocol}://127.0.0.1:${listening_port}/version | grep -q "\"artifact\": \"${artifact_id}\"" || exit 1
+
+ONBUILD RUN rm $HOME/app.py

@@ -11,6 +11,7 @@
     mlr-python-base:
       build: .
       image: mlr-python-base
+      container_name: mlr-python-base
       secrets:
         - source: ssl_crt
           target: /home/python/certificates/wildcard-ssl.crt
@@ -21,4 +22,3 @@
         - secrets.env
       ports:
         - "8000:8000"
-      command: python -m http.server 8000

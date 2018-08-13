@@ -2,7 +2,7 @@ sudo: required
 
 env:
   global:
-     - DOCKER_COMPOSE_VERSION=1.21.1
+     - DOCKER_COMPOSE_VERSION=1.22.0
      - DOCKER_IMAGE=mlr-python-base
 
 services:
@@ -20,11 +20,23 @@ before_install:
   - git clone https://github.com/docker/docker-bench-security.git
 
 install:
-  - docker build -t $DOCKER_IMAGE .
-  - docker-compose -f docker-compose.yml up -d --build
+  - docker-compose up -d --build
 
 script:
-  # Not yet
+  - |
+    count=1
+    limit=60
+    until docker ps --filter "name=$DOCKER_IMAGE" --filter "health=healthy" --format "{{.Names}}" | grep "$DOCKER_IMAGE"
+    do
+      echo "Testing container health $count of $limit"
+      if [ $count -eq $limit ]; then
+        echo "Docker container $DOCKER_IMAGE"
+        exit 1
+      fi
+      sleep 1
+      count=$((count + 1))
+    done
+    echo "Docker container $DOCKER_IMAGE is up and healthy"
   - sleep 5 && curl -s "http://$(ip -4 addr show eth0 | grep -oP '(?<=inet\s)\d+(\.\d+){3}'):8000/" -I | head -n 1 | cut -d$' ' -f2 | grep -q 200
   - cd docker-bench-security
   - sudo sh docker-bench-security.sh -c container_images
