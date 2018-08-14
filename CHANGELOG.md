@@ -15,8 +15,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - isuftin@usgs.gov - certificate import script
 - isuftin@usgs.gov - maintainer label in Dockerfile
 - isuftin@usgs.gov - certificate import envs in Dockerfile
+- isuftin@usgs.gov - sample application for base container
+- isuftin@usgs.gov - health check
+- isuftin@usgs.gov - onbuild command to remove sample application on downstream containers
+- isuftin@usgs.gov - squelching pip installation
 
 ### Changed
+ - isuftin@usgs.gov - use port 8000
+ - isuftin@usgs.gov - switch in entrypoint to test for sample application
  - isuftin@usgs.gov - Moved lines around in Dockerfile
  - isuftin@usgs.gov - Dockerfile now uses python user instead of root
  - isuftin@usgs.gov - Removed check in travis for a running container

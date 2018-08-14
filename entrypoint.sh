@@ -3,4 +3,8 @@
 
 /bin/ash $HOME/import_certs.sh
 
-gunicorn --reload app --config file:$HOME/local/gunicorn_config.py --user $USER
+if [ -f "app.py" ]; then
+  gunicorn --reload app:app --config file:$HOME/local/gunicorn_config.py --user $USER
+else
+  gunicorn --reload app --config file:$HOME/local/gunicorn_config.py --user $USER
+fi
