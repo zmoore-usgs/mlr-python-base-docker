@@ -17,6 +17,7 @@ ENV jwt_decode_audience=default
 ENV CERT_IMPORT_DIRECTORY=$HOME/certificates
 ENV ssl_cert_path=$CERT_IMPORT_DIRECTORY/wildcard-ssl.crt
 ENV ssl_key_path=$CERT_IMPORT_DIRECTORY/wildcard-ssl.key
+ENV SSL_STORAGE_DIR=$HOME/ssl
 ENV PATH="$PATH:$HOME/.local/bin"
 
 RUN apk update && apk add --update --no-cache \
