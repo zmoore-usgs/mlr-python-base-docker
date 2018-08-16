@@ -17,6 +17,7 @@ ENV jwt_decode_audience=default
 ENV CERT_IMPORT_DIRECTORY=$HOME/certificates
 ENV ssl_cert_path=$CERT_IMPORT_DIRECTORY/wildcard-ssl.crt
 ENV ssl_key_path=$CERT_IMPORT_DIRECTORY/wildcard-ssl.key
+ENV SSL_STORAGE_DIR=$HOME/ssl
 ENV PATH="$PATH:$HOME/.local/bin"
 
 RUN apk update && apk add --update --no-cache \
@@ -37,11 +38,6 @@ RUN export PIP_CERT="/etc/ssl/certs/ca-certificates.crt" && \
   if [[ ! -e /usr/bin/python ]]; then ln -sf /usr/bin/python3 /usr/bin/python; fi
 
 RUN adduser --disabled-password -u 1000 $USER
-# The python user needs to own the following two directories to be able to write
-# to them as part of the update-ca-certificates command in the import_certs.sh
-# script
-RUN chown -R $USER /usr/local/share/ca-certificates
-RUN chown -R $USER /etc/ssl/certs
 
 WORKDIR $HOME
 RUN mkdir $HOME/local
@@ -54,8 +50,10 @@ RUN chown -R $USER:$USER $HOME
 USER $USER
 ARG GUNICORN_VERSION=19.7.1
 ARG GEVENT_VERSION=1.3.5
+ARG CERTIFI_VERSION=2017.11.5
 RUN pip3 install --user --quiet --no-cache-dir gunicorn==$GUNICORN_VERSION && \
-    pip3 install --user --quiet --no-cache-dir gevent==$GEVENT_VERSION
+    pip3 install --user --quiet --no-cache-dir gevent==$GEVENT_VERSION  && \
+    pip3 install --user --quiet --no-cache-dir certifi==$CERTIFI_VERSION
 
 COPY app.py $HOME/app.py
 
