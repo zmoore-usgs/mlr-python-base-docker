@@ -59,6 +59,6 @@ COPY app.py $HOME/app.py
 
 CMD ["./entrypoint.sh"]
 
-HEALTHCHECK CMD curl -k ${protocol}://127.0.0.1:${listening_port}/version | grep -q "\"artifact\": \"${artifact_id}\"" || exit 1
+HEALTHCHECK CMD curl -k ${protocol}://127.0.0.1:${listening_port}/version | grep -q ${artifact_id} || exit 1
 
 ONBUILD RUN rm $HOME/app.py
