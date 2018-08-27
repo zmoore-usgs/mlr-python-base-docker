@@ -28,6 +28,7 @@ RUN apk update && apk add --update --no-cache \
   libffi-dev \
   openssl-dev \
   openssl \
+  netcat-openbsd \
   curl && \
   rm -rf /var/cache/apk/*
 
@@ -54,6 +55,12 @@ ARG CERTIFI_VERSION=2017.11.5
 RUN pip3 install --user --quiet --no-cache-dir gunicorn==$GUNICORN_VERSION && \
     pip3 install --user --quiet --no-cache-dir gevent==$GEVENT_VERSION  && \
     pip3 install --user --quiet --no-cache-dir certifi==$CERTIFI_VERSION
+
+# This is used for downstream containers that may need this scripting in order to
+# orchestrate container startups.
+# See: https://github.com/eficode/wait-for
+RUN curl -o ./wait-for.sh https://raw.githubusercontent.com/eficode/wait-for/f71f8199a0dd95953752fb5d3f76f79ced16d47d/wait-for && \
+  chmod +x ./wait-for.sh
 
 COPY app.py $HOME/app.py
 
