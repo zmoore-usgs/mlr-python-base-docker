@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 ### Added
+- isuftin@usgs.gov - Added wait-for.sh (and the netcat package) to help with
+downstream container start orchestration
 - kmschoep@usgs.gov - Dockerfile
 - kmschoep@usgs.gov - docker-compose.env
 - kmschoep@usgs.gov - docker-compose.yml
