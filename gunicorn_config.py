@@ -16,5 +16,6 @@ keepalive = int(os.getenv('gunicorn_keep_alive', 75))
 timeout = int(os.getenv('gunicorn_silent_timeout', 120))
 grceful_timeout = int(os.getenv('gunicorn_graceful_timeout', 120))
 worker_class = 'gevent'
+ciphers = 'TLSv1.2'
 
 gunicorn.SERVER_SOFTWARE = ''
