@@ -35,7 +35,7 @@ RUN apk update && apk add --update --no-cache \
 RUN export PIP_CERT="/etc/ssl/certs/ca-certificates.crt" && \
   python3 -m ensurepip && \
   rm -r /usr/lib/python*/ensurepip && \
-  pip3 install --upgrade --no-cache-dir pip && \
+  pip3 install --upgrade --no-cache-dir pip==18.1&& \
   if [[ ! -e /usr/bin/python ]]; then ln -sf /usr/bin/python3 /usr/bin/python; fi
 
 RUN adduser --disabled-password -u 1000 $USER
