@@ -19,6 +19,7 @@ ENV ssl_cert_path=$CERT_IMPORT_DIRECTORY/wildcard-ssl.crt
 ENV ssl_key_path=$CERT_IMPORT_DIRECTORY/wildcard-ssl.key
 ENV SSL_STORAGE_DIR=$HOME/ssl
 ENV PATH="$PATH:$HOME/.local/bin"
+ENV PIP_CERT=/etc/ssl/certs/ca-certificates.crt
 
 RUN apk update && apk add --update --no-cache \
   python3 \
@@ -32,8 +33,13 @@ RUN apk update && apk add --update --no-cache \
   curl && \
   rm -rf /var/cache/apk/*
 
-RUN export PIP_CERT="/etc/ssl/certs/ca-certificates.crt" && \
-  python3 -m ensurepip && \
+RUN if getent ahosts "sslhelp.doi.net" > /dev/null 2>&1; then \
+                wget 'https://s3-us-west-2.amazonaws.com/prod-owi-resources/resources/InstallFiles/SSL/DOIRootCA.cer' -O /usr/local/share/ca-certificates/DOIRootCA2.crt && \
+                update-ca-certificates; \
+        fi
+
+
+RUN python3 -m ensurepip && \
   rm -r /usr/lib/python*/ensurepip && \
   pip3 install --upgrade --no-cache-dir pip==18.1 && \
   if [[ ! -e /usr/bin/python ]]; then ln -sf /usr/bin/python3 /usr/bin/python; fi
