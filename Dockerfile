@@ -1,4 +1,4 @@
-FROM alpine:3.8
+FROM python:3.6-alpine
 
 LABEL maintainer="gs-w_eto_eb_federal_employees@usgs.gov"
 
@@ -18,18 +18,20 @@ ENV CERT_IMPORT_DIRECTORY=$HOME/certificates
 ENV ssl_cert_path=$CERT_IMPORT_DIRECTORY/wildcard-ssl.crt
 ENV ssl_key_path=$CERT_IMPORT_DIRECTORY/wildcard-ssl.key
 ENV SSL_STORAGE_DIR=$HOME/ssl
+ENV PROJ_DIR=/usr
 ENV PATH="$PATH:$HOME/.local/bin"
 ENV PIP_CERT=/etc/ssl/certs/ca-certificates.crt
 
 RUN apk update && apk add --update --no-cache \
-  python3 \
-  python3-dev \
   build-base \
   ca-certificates \
   libffi-dev \
   openssl-dev \
   openssl \
   netcat-openbsd \
+  proj \
+  proj-util \
+  proj-dev \
   curl && \
   rm -rf /var/cache/apk/*
 
@@ -38,10 +40,9 @@ RUN if getent ahosts "sslhelp.doi.net" > /dev/null 2>&1; then \
                 update-ca-certificates; \
         fi
 
-
 RUN python3 -m ensurepip && \
-  rm -r /usr/lib/python*/ensurepip && \
-  pip3 install --upgrade --no-cache-dir pip==18.1 && \
+  rm -rf /usr/lib/python*/ensurepip && \
+  pip3 install --upgrade --no-cache-dir pip==20.0.2 && \
   if [[ ! -e /usr/bin/python ]]; then ln -sf /usr/bin/python3 /usr/bin/python; fi
 
 RUN adduser --disabled-password -u 1000 $USER
@@ -55,9 +56,9 @@ RUN [ "chmod", "+x", "import_certs.sh", "entrypoint.sh" ]
 RUN chown $USER:$USER import_certs.sh entrypoint.sh local/gunicorn_config.py
 RUN chown -R $USER:$USER $HOME
 USER $USER
-ARG GUNICORN_VERSION=19.7.1
-ARG GEVENT_VERSION=1.3.5
-ARG CERTIFI_VERSION=2017.11.5
+ARG GUNICORN_VERSION=20.0.4
+ARG GEVENT_VERSION=1.4.0
+ARG CERTIFI_VERSION=2019.11.28
 RUN pip3 install --user --quiet --no-cache-dir gunicorn==$GUNICORN_VERSION && \
     pip3 install --user --quiet --no-cache-dir gevent==$GEVENT_VERSION  && \
     pip3 install --user --quiet --no-cache-dir certifi==$CERTIFI_VERSION
